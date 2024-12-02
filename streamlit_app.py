@@ -47,41 +47,77 @@ if uploaded_files is not None:
         chart = dict()
         if st.button("确定查看"):
             my_bar1 = st.progress(0, "正在处理")
-            if options:
-                chart = {key: data[key] for key in options}
-                Timedata = list(data["Time"])
-                years = Timedata
-                data_list = []
-                my_bar1.progress(10,"分析数据中")
-                for category, revenues in chart.items():
-                    for year, revenue in zip(years, revenues):
-                        my_bar1.progress(50, "分析数据中")
-                        data_list.append({'Time': year, 'Revenue': revenue, 'Category': category})
-                df = pd.DataFrame(data_list)
-                my_bar1.progress(60, "分析数据完成")
-                # 创建基础图表
-                base = alt.Chart(df).encode(
-                    x=alt.X('Time', title='时间')
-                )
-                my_bar1.progress(80, "创建数据图表")
-                # 创建多个折线图
-                lines = []
-                for category in df['Category'].unique():
-                    line = base.transform_filter(
-                        alt.datum.Category == category
-                    ).mark_line().encode(
-                        y=alt.Y('Revenue', title='温度', scale=alt.Scale(domain=[0, 100])),
-                        color=alt.Color('Category', legend=alt.Legend(title='类别'))
+            try:
+                if options:
+                    chart = {key: data[key] for key in options}
+                    Timedata = list(data["Time"])
+                    years = Timedata
+                    data_list = []
+                    my_bar1.progress(10,"分析数据中")
+                    for category, revenues in chart.items():
+                        for year, revenue in zip(years, revenues):
+                            my_bar1.progress(50, "分析数据中")
+                            data_list.append({'Time': year, 'Revenue': revenue, 'Category': category})
+                    df = pd.DataFrame(data_list)
+                    my_bar1.progress(60, "分析数据完成")
+                    # 创建基础图表
+                    base = alt.Chart(df).encode(
+                        x=alt.X('Time', title='时间')
                     )
-                    lines.append(line)
-                # 合并图表
-                final_chart = alt.layer(*lines).properties(
-                    title='数据变化趋势',
-                    width=600,
-                    height=400
-                )
-                # 显示图表
-                st.altair_chart(final_chart, use_container_width=True)
-                my_bar1.progress(100, "数据分析完成，请查看图表")
-
-
+                    my_bar1.progress(80, "创建数据图表")
+                    # 创建多个折线图
+                    lines = []
+                    for category in df['Category'].unique():
+                        line = base.transform_filter(
+                            alt.datum.Category == category
+                        ).mark_line().encode(
+                            y=alt.Y('Revenue', title='温度', scale=alt.Scale(domain=[0, 100])),
+                            color=alt.Color('Category', legend=alt.Legend(title='类别'))
+                        )
+                        lines.append(line)
+                    # 合并图表
+                    final_chart = alt.layer(*lines).properties(
+                        title='数据变化趋势',
+                        width=600,
+                        height=400
+                    )
+                    # 显示图表
+                    st.altair_chart(final_chart, use_container_width=True)
+                    my_bar1.progress(100, "数据分析完成，请查看图表")
+            except:
+                if options:
+                    chart = {key: data[key] for key in options}
+                    Timedata = list(data["时间"])
+                    years = Timedata
+                    data_list = []
+                    my_bar1.progress(10,"分析数据中")
+                    for category, revenues in chart.items():
+                        for year, revenue in zip(years, revenues):
+                            my_bar1.progress(50, "分析数据中")
+                            data_list.append({'Time': year, 'Revenue': revenue, 'Category': category})
+                    df = pd.DataFrame(data_list)
+                    my_bar1.progress(60, "分析数据完成")
+                    # 创建基础图表
+                    base = alt.Chart(df).encode(
+                        x=alt.X('Time', title='时间')
+                    )
+                    my_bar1.progress(80, "创建数据图表")
+                    # 创建多个折线图
+                    lines = []
+                    for category in df['Category'].unique():
+                        line = base.transform_filter(
+                            alt.datum.Category == category
+                        ).mark_line().encode(
+                            y=alt.Y('Revenue', title='温度', scale=alt.Scale(domain=[0, 100])),
+                            color=alt.Color('Category', legend=alt.Legend(title='类别'))
+                        )
+                        lines.append(line)
+                    # 合并图表
+                    final_chart = alt.layer(*lines).properties(
+                        title='数据变化趋势',
+                        width=600,
+                        height=400
+                    )
+                    # 显示图表
+                    st.altair_chart(final_chart, use_container_width=True)
+                    my_bar1.progress(100, "数据分析完成，请查看图表")
